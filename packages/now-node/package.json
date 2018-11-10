@@ -1,5 +1,5 @@
 {
-  "name": "@now/node",
+  "name": "haydn-now-node-builder",
   "version": "0.4.23-canary.3",
   "dependencies": {
     "@now/node-bridge": "^0.1.6-canary.3"
