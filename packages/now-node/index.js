@@ -36,6 +36,7 @@ async function commonForTwo ({ files, entrypoint, workPath, cachePath }) {
           'rollup': '0.67.0',
           'rollup-plugin-commonjs': '9.2.0',
           'rollup-plugin-json': '3.1.0',
+          'rollup-plugin-yaml': '1.1.0',
           'rollup-plugin-node-resolve': '3.4.0',
           'rollup-plugin-terser': '3.0.0'
         }
@@ -84,8 +85,8 @@ exports.build = async ({ files, entrypoint, workPath }) => {
   return { [entrypoint]: lambda };
 };
 
-exports.prepareCache = async ({ files, entrypoint, cachePath }) => {
-  await commonForTwo({ files, entrypoint, cachePath });
+exports.prepareCache = async ({ files, entrypoint, cachePath, config }) => {
+  await commonForTwo({ files, entrypoint, cachePath, config });
 
   return {
     ...await glob('user/node_modules/**', cachePath),
@@ -102,6 +103,7 @@ async function compile (workRollupPath, input) {
   const nodeResolve = require(path.join(workRollupPath, 'node_modules/rollup-plugin-node-resolve'));
   const commonjs = require(path.join(workRollupPath, 'node_modules/rollup-plugin-commonjs'));
   const json = require(path.join(workRollupPath, 'node_modules/rollup-plugin-json'));
+  const yaml = require(path.join(workRollupPath, 'node_modules/rollup-plugin-yaml'));
   const { terser } = require(path.join(workRollupPath, 'node_modules/rollup-plugin-terser'));
   const builtins = require(path.join(workRollupPath, 'node_modules/builtins'))();
 
@@ -115,6 +117,7 @@ async function compile (workRollupPath, input) {
         preferBuiltins: true
       }),
       json(),
+      yaml(),
       commonjs(),
       terser()
     ],
